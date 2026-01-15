@@ -403,43 +403,50 @@ document.addEventListener('keydown', e => {
     }
 });
 </script>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>
-  // Bloquear clic derecho
-  document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-    alert("Clic derecho deshabilitado en esta página");
-  });
+// Bloquear clic derecho
+document.addEventListener("contextmenu", function(e) {
+  e.preventDefault();
+});
 
-  // Bloquear copiar y cortar
-  document.addEventListener('copy', function(e) {
-    e.preventDefault();
-    alert("Copiar contenido deshabilitado");
-  });
-  document.addEventListener('cut', function(e) {
-    e.preventDefault();
-    alert("Cortar contenido deshabilitado");
-  });
+// Bloquear copiar, cortar y pegar
+document.addEventListener("copy", e => e.preventDefault());
+document.addEventListener("cut", e => e.preventDefault());
+document.addEventListener("paste", e => e.preventDefault());
 
-  // Bloquear teclado para Ctrl+C, Ctrl+U, Ctrl+S, Ctrl+Shift+I
-  document.addEventListener('keydown', function(e) {
-    if (
-      e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's') ||
-      (e.ctrlKey && e.shiftKey && e.key === 'I')
-    ) {
-      e.preventDefault();
-      alert("Esta acción está deshabilitada");
-    }
-  });
+// Bloquear combinaciones de teclas comunes
+document.addEventListener("keydown", function(e) {
+  if (
+    e.ctrlKey && (
+      e.key === "u" ||  // Ver código fuente
+      e.key === "s" ||  // Guardar
+      e.key === "c" ||  // Copiar
+      e.key === "x" ||  // Cortar
+      e.key === "v"     // Pegar
+    )
+    || (e.ctrlKey && e.shiftKey && (
+      e.key === "I" ||  // DevTools
+      e.key === "J" ||  // Consola
+      e.key === "C"     // Inspector
+    ))
+    || e.key === "F12"  // DevTools
+  ) {
+    e.preventDefault();
+    return false;
+  }
+});
+
+// Detectar DevTools abiertos
+setInterval(function() {
+  if (
+    window.outerWidth - window.innerWidth > 160 ||
+    window.outerHeight - window.innerHeight > 160
+  ) {
+    document.body.innerHTML = "";
+  }
+}, 1000);
 </script>
-</head>
-<body>
-<h1>Bienvenido a mi página protegida</h1>
-<p>El contenido de esta página está protegido contra copia y accesos no autorizados.</p>
+
 </body>
 </html>
 
