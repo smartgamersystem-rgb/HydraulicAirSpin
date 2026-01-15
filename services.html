@@ -137,3 +137,47 @@
     .trust-row .trust-cell:last-child::before { content: "Details:"; }
 }
 </style>
+<script>
+// Bloquear clic derecho
+document.addEventListener("contextmenu", function(e) {
+  e.preventDefault();
+});
+
+// Bloquear copiar, cortar y pegar
+document.addEventListener("copy", e => e.preventDefault());
+document.addEventListener("cut", e => e.preventDefault());
+document.addEventListener("paste", e => e.preventDefault());
+
+// Bloquear combinaciones de teclas comunes
+document.addEventListener("keydown", function(e) {
+  if (
+    e.ctrlKey && (
+      e.key === "u" ||  // Ver código fuente
+      e.key === "s" ||  // Guardar
+      e.key === "c" ||  // Copiar
+      e.key === "x" ||  // Cortar
+      e.key === "v"     // Pegar
+    )
+    || (e.ctrlKey && e.shiftKey && (
+      e.key === "I" ||  // DevTools
+      e.key === "J" ||  // Consola
+      e.key === "C"     // Inspector
+    ))
+    || e.key === "F12"  // DevTools
+  ) {
+    e.preventDefault();
+    return false;
+  }
+});
+
+// Detectar DevTools abiertos
+setInterval(function() {
+  if (
+    window.outerWidth - window.innerWidth > 160 ||
+    window.outerHeight - window.innerHeight > 160
+  ) {
+    document.body.innerHTML = "";
+  }
+}, 1000);
+</script>
+
